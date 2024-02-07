@@ -1,0 +1,46 @@
+using System;
+using System.IO;
+
+class Program
+{
+    static void Main()
+    {
+        bool journalStarted = false;
+        var journalEntries = new System.Collections.Generic.List<string>();
+
+        while (true)
+        {
+            string entry = Console.ReadLine();
+
+            if (entry.ToLower() == "start" && !journalStarted)
+            {
+                journalStarted = true;
+                continue;
+            }
+            else if (entry.ToLower() == "stop" && journalStarted)
+            {
+                break;
+            }
+            else if (journalStarted)
+            {
+                journalEntries.Add(entry);
+            }
+        }
+
+        string currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+        string fileName = $"{currentDate}.txt";
+
+        using (StreamWriter writer = new StreamWriter(fileName))
+        {
+            writer.WriteLine("Captain’s log");
+            writer.WriteLine($"Stardate {currentDate}");
+
+            foreach (var entry in journalEntries)
+            {
+                writer.WriteLine(entry);
+            }
+
+            writer.WriteLine("Jean-Luc Picard");
+        }
+    }
+}
